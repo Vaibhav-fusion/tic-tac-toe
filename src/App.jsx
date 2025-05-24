@@ -1,10 +1,18 @@
-import React from 'react'
-import Game from './component/Game'
 
-function App() {
+import Box from "./component/Box";
+
+
+
+export default function App() {
   return (
-    <Game></Game>
-  )
-}
 
-export default App
+    <main className="min-h-screen grid place-items-center bg-slate-100">
+
+      <section className="grid grid-cols-3 gap-2">  
+        {Array.from({ length: 9 }).map((_, i) => (
+          <Box key={i} value={null} />
+        ))}
+      </section>
+    </main>
+  );
+}
