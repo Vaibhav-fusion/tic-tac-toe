@@ -4,6 +4,8 @@ import Board from "./component/Board";
 import Model from "./component/Model";
 import Playpage from "./component/Playpage";
 
+import MusicToggle from "./component/MusicToggel";
+
 
 function WinnerCal(arr) {
   const lines = [
@@ -37,6 +39,8 @@ const emojiCategories = {
 };
 
 export default function App() {
+
+
   
   const [showGame, setShowGame] = useState(false);
   const [use3D, setUse3D] = useState(true);
@@ -102,8 +106,9 @@ export default function App() {
   };
 
   return (
-    <main className="min-h-screen grid place-items-center bg-slate-100">
+    <main className="mx-auto" >
       
+      <MusicToggle />
      
       {!showGame ? (
 
@@ -164,9 +169,9 @@ export default function App() {
           {catsReady && (
             <>
               {use3D ? (
-                <Board tiles={displaySquares} onclick={handleClick} />
+                <Board tiles={displaySquares} onclick={handleClick}  p1color="red"  p2color="blue" squares={squares} />
               ) : (
-                <section className="grid grid-cols-3 gap-2">
+                <section className="grid grid-cols-3 gap-2  max-w-md mx-auto ">
                   {squares.map((e, i) => (
                     <Box
                       key={i}
