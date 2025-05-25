@@ -20,6 +20,9 @@ function WinnerCal(arr) {
 export default function App() {
   const [squares, setSquare] = useState(Array(9).fill(null));
   const [isnext, setNext] = useState(true);
+  //queue
+  const [xMoves, setXMoves] = useState([]);
+  const [oMoves, setOMoves] = useState([]);
 
   const winner = WinnerCal(squares);
 
@@ -32,20 +35,39 @@ export default function App() {
   console.log(winner);
 
   const handleClick = (idx) => {
-    if (squares[idx]) {
-      return; //click check on the same thingy 😭
+    if (squares[idx] || winner) return; // check for filled and empty 
+
+    const currentMoves = isnext ? xMoves : oMoves;  
+    const setCurrentMoves = isnext ? setXMoves : setOMoves;
+
+    // len-3 check
+    if (currentMoves.length === 3 && idx === currentMoves[0]) {
+      // alert("You can’t place on your oldest emoji!"); //for debug
+      return;
     }
 
-    const next = [...squares];
-    next[idx] = isnext ? "X" : "O";
-    setSquare(next);
-    setNext(!isnext);
+    const nextSquares = [...squares]; 
+
+    if (currentMoves.length === 3) {
+      const oldestIndex = currentMoves[0];
+      nextSquares[oldestIndex] = null;
+    }
+
+    nextSquares[idx] = isnext ? "X" : "O";
+    setSquare(nextSquares);
+
+    setCurrentMoves([...currentMoves.slice(-2), idx]);  
+
+    setNext(!isnext); 
   };
 
   const reset = () => {
     setSquare(Array(9).fill(null));
     setNext(true);
+    setXMoves([]);
+    setOMoves([]);
   };
+
   return (
     <main className="min-h-screen grid place-items-center bg-slate-100">
       <section className="grid grid-cols-3 gap-2">
