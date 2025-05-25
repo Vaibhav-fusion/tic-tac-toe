@@ -49,7 +49,7 @@ export default function App() {
     ? `🏆 Winner: ${winner}`
     : squares.every(Boolean)
     ? "😅 Draw!"
-    : `Next player: ${isnext ? "X" : "O"}`;
+    : `Next player: ${isnext ? "1" : "2"}`;
 
   const handleClick = (idx) => {
     if (!catsReady) return;
@@ -133,7 +133,6 @@ export default function App() {
             </div>
           )}
 
-          {/* Switch 2D/3D Button */}
           {catsReady && (
             <div className="mb-6">
               <button
@@ -145,7 +144,6 @@ export default function App() {
             </div>
           )}
 
-          {/* Game Board */}
           {catsReady && (
             <>
               {use3D ? (
