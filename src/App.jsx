@@ -1,31 +1,22 @@
+import React, { useState } from "react";
 import Box from "./component/Box";
-import { useState } from "react";
 import Board from "./component/Board";
 import Model from "./component/Model";
 import Playpage from "./component/Playpage";
-
 import MusicToggle from "./component/MusicToggel";
-
 
 function WinnerCal(arr) {
   const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], 
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], 
+    [0, 4, 8], [2, 4, 6],
   ];
   for (const [a, b, c] of lines)
     if (arr[a] && arr[a] === arr[b] && arr[a] === arr[c]) return arr[a];
   return null;
 }
 
-const rand = (arr) => {
-  return arr[Math.floor(Math.random() * arr.length)];
-};
+const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 const emojiCategories = {
   Animals: ["🐶", "🐱", "🐵", "🐰"],
@@ -39,12 +30,8 @@ const emojiCategories = {
 };
 
 export default function App() {
-
-
-  
   const [showGame, setShowGame] = useState(false);
   const [use3D, setUse3D] = useState(true);
-
 
   const [squares, setSquare] = useState(Array(9).fill(null));
   const [isnext, setNext] = useState(true);
@@ -53,9 +40,9 @@ export default function App() {
   const [displaySquares, setDisplaySquares] = useState(Array(9).fill(null));
   const [p1Cat, setP1Cat] = useState("");
   const [p2Cat, setP2Cat] = useState("");
+
   const cats = Object.keys(emojiCategories);
   const catsReady = p1Cat && p2Cat && p1Cat !== p2Cat;
-
 
   const winner = WinnerCal(squares);
   const winner_text = winner
@@ -66,15 +53,12 @@ export default function App() {
 
   const handleClick = (idx) => {
     if (!catsReady) return;
-
     if (squares[idx] || winner) return;
 
     const currentMoves = isnext ? xMoves : oMoves;
     const setCurrentMoves = isnext ? setXMoves : setOMoves;
 
-    if (currentMoves.length === 3 && idx === currentMoves[0]) {
-      return;
-    }
+    if (currentMoves.length === 3 && idx === currentMoves[0]) return;
 
     const nextSquares = [...squares];
     const nextDisplay = [...displaySquares];
@@ -106,26 +90,22 @@ export default function App() {
   };
 
   return (
-    <main className="mx-auto" >
-      
+    <main className="font-[Poppins] min-h-screen bg-indigo-50 px-4 py-6 text-gray-800 flex flex-col items-center justify-start">
       <MusicToggle />
-     
+
       {!showGame ? (
-
         <Playpage click_fun={setShowGame} />
-
-      
       ) : (
-        <>
-          {/*  2 Emoji selectors thingy */}
+        <div className="w-full max-w-xl flex flex-col items-center">
+          {/* Emoji Selectors */}
           {!catsReady && (
-            <div className="mb-6 flex gap-6">
+            <div className="mb-6 flex flex-wrap justify-center gap-6 w-full px-4">
               <div>
-                <p className="font-semibold mb-1">Player 1 :</p>
+                <p className="font-semibold mb-1 text-center">Player 1 :</p>
                 <select
                   value={p1Cat}
                   onChange={(e) => setP1Cat(e.target.value)}
-                  className="border p-2 rounded"
+                  className="border p-2 rounded w-40"
                 >
                   <option value="">-- choose --</option>
                   {cats.map((c) => (
@@ -136,11 +116,11 @@ export default function App() {
                 </select>
               </div>
               <div>
-                <p className="font-semibold mb-1">Player 2 :</p>
+                <p className="font-semibold mb-1 text-center">Player 2 :</p>
                 <select
                   value={p2Cat}
                   onChange={(e) => setP2Cat(e.target.value)}
-                  className="border p-2 rounded"
+                  className="border p-2 rounded w-40"
                 >
                   <option value="">-- choose --</option>
                   {cats.map((c) => (
@@ -153,26 +133,32 @@ export default function App() {
             </div>
           )}
 
-          {/* mark-1 */}
+          {/* Switch 2D/3D Button */}
           {catsReady && (
-            <div className="mb-4">
+            <div className="mb-6">
               <button
                 onClick={() => setUse3D((prev) => !prev)}
-                className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+                className="px-6 py-3 rounded bg-indigo-600 text-white hover:bg-indigo-700 transition"
               >
                 Switch to {use3D ? "2D" : "3D"}
               </button>
             </div>
           )}
 
-          {/* mark-2 */}
+          {/* Game Board */}
           {catsReady && (
             <>
               {use3D ? (
-                <Board tiles={displaySquares} onclick={handleClick}  p1color="red"  p2color="blue" squares={squares} />
+                <Board
+                  tiles={displaySquares}
+                  onclick={handleClick}
+                  p1color="orange"
+                  p2color="cyan"
+                  squares={squares}
+                />
               ) : (
-                <section className="grid grid-cols-3 gap-2  max-w-md mx-auto ">
-                  {squares.map((e, i) => (
+                <section className="grid grid-cols-3 gap-3 max-w-md mx-auto">
+                  {squares.map((_, i) => (
                     <Box
                       key={i}
                       value={displaySquares[i]}
@@ -182,17 +168,17 @@ export default function App() {
                 </section>
               )}
 
-              <p className="mt-4 text-xl text-amber-500"> {winner_text}</p>
+              <p className="mt-6 text-xl text-amber-500 font-semibold">{winner_text}</p>
+
               <button
                 onClick={reset}
-                className="mt-4 px-4 py-2 rounded bg-teal-500 text-white
-                 font-semibold hover:bg-teal-600"
+                className="mt-4 px-6 py-3 rounded bg-teal-500 text-white font-semibold hover:bg-teal-600 transition"
               >
                 Restart
               </button>
             </>
           )}
-        </>
+        </div>
       )}
     </main>
   );

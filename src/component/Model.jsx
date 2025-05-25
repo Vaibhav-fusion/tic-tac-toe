@@ -6,7 +6,7 @@ import { useGLTF } from "@react-three/drei";
 function NerdoModel(props) {
   const { nodes, materials } = useGLTF("/nerdo.glb");
   return (
-    <group {...props} dispose={null} scale={0.05} rotation={[Math.PI/120, Math.PI / -2, 0]} >
+    <group {...props} dispose={null} scale={0.1} rotation={[Math.PI/120, Math.PI / -2, 0]} >
       <group rotation={[-Math.PI / 2, 0, 0]}>
         <group rotation={[Math.PI / 2, 0, 0]}>
           <group rotation={[0, 0, 0.214]}>
@@ -66,7 +66,7 @@ export default function Model(props) {
         <ambientLight intensity={0.5} />
         <directionalLight position={[5, 5, 5]} intensity={0.7} castShadow />
         <NerdoModel {...props} />
-        <OrbitControls enablePan={false} enableZoom={true} />
+        <OrbitControls enablePan={false} enableZoom={true} autoRotate={true}/>
       </Canvas>
     </div>
   );
